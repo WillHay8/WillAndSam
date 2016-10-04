@@ -1,5 +1,6 @@
 define(function(require) {
 
+    // Define a library of functions for performing client tasks
     var Client = {};
 
     Client.postMessage = function(dInput, successHandler) {
@@ -27,6 +28,6 @@ define(function(require) {
             contentType: "application/json"
         });
     };
-
+    
     return Object.seal(Client);
 });
