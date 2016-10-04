@@ -1,11 +1,19 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html>
     <head>
         <title>Will chat</title>
         <!-- data-main attribute tells require.js to load scripts/main.js after require.js loads. -->
         <script data-main="js/main" src="js/lib/require.js"></script>
+		<link rel="stylesheet" type="text/css" href="css/main.css">
     </head>
     <body>
     	<h1>Will chat</h1>
+		<div id="chatLog">
+		</div>
+		<div id="messageInput">
+			<input id="message" type="text" name="message" placeholder="type your message here"/>
+			<button id="submit" >submit message</button>
+		</form>
+
     </body>
 </html>

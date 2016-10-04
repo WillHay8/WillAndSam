@@ -6,6 +6,12 @@ requirejs.config({
 });
 
 requirejs(['jquery'], function( $ ) {
-	console.log('Hello')
-    console.log( $ )
+	var $submit = $('#submit');
+    $submit.on('click', printMessage);
+
+    function printMessage(){
+        var $chatLog = $('#chatLog');
+        var $message = $('#message');
+        $chatLog.append('<p>'+$message.val()+'</p>');
+    }
 });
