@@ -6,12 +6,39 @@ requirejs.config({
 });
 
 requirejs(['jquery'], function( $ ) {
+    var receivedMessages = [];
 	var $submit = $('#submit');
-    $submit.on('click', printMessage);
+    $submit.on('click', postMessage);
 
-    function printMessage(){
+    function updateChatLog(messageText) {
         var $chatLog = $('#chatLog');
-        var $message = $('#message');
-        $chatLog.append('<p>'+$message.val()+'</p>');
+        $chatLog.append('<p>'+messageText+'</p>');
+    }
+
+    function successHandler(allMessages) {
+        var lastOldMessageId = 0;
+        if (receivedMessages.length > 0) {
+            lastOldMessageId = receivedMessages[receivedMessages.length - 1].id;
+        }
+        newMessages = allMessages.filter(function(m) {return m.id > lastOldMessageId;});
+        newMessages.forEach(function(m){
+            updateChatLog(m.text);
+        });
+        receivedMessages = allMessages;
+    }
+
+    function postMessage(){
+        var messageText = $('#message').val();
+        messageJson = JSON.stringify({
+            'text': messageText
+        });
+        $.ajax({
+            type: "POST",
+            url: "/message",
+            data: messageJson,
+            success: successHandler,
+            dataType: "json",
+            contentType: "application/json"
+        });
     }
 });
