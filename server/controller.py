@@ -5,12 +5,12 @@ app = Flask(__name__)
 
 MESSAGE_CACHE = []
 
-@app.route("/message", method=["POST"])
+@app.route("/message", methods=["POST"])
 def submit_message():
 	MESSAGE_CACHE.append(request.form)
 	return MESSAGE_CACHE
 
-@app.route("/messages", method=["GET"])
+@app.route("/messages", methods=["GET"])
 def get_messages():
 	return MESSAGE_CACHE
 
