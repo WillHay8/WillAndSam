@@ -1,18 +1,19 @@
 requirejs.config({
-    baseUrl: 'js/lib',
+    baseUrl: 'js',
     paths: {
-        jquery: 'jquery-3.1.1'
+        jquery: 'lib/jquery-3.1.1'
     }
 });
 
-requirejs(['jquery'], function( $ ) {
+requirejs(['jquery', 'Client'], function($, Client) {
     var receivedMessages = [];
 	var $submit = $('#submit');
-    $submit.on('click', postMessage);
-
+    $submit.on('click', function(e) {
+        Client.postMessage($('#message'), successHandler);
+    });
     $('#message').on('keypress', function(e) {
         if(e.which === 13){
-            postMessage(this);
+            Client.postMessage(this, successHandler);
         }
     });
 
@@ -33,31 +34,5 @@ requirejs(['jquery'], function( $ ) {
         receivedMessages = allMessages;
     }
 
-    function postMessage(dInput) {
-        var messageText = $(dInput).val();
-        messageJson = JSON.stringify({
-            'text': messageText
-        });
-        $.ajax({
-            type: "POST",
-            url: "/message",
-            data: messageJson,
-            success: successHandler,
-            dataType: "json",
-            contentType: "application/json"
-        });
-        $(dInput).val('');
-    }
-
-    function pollForMessages() {
-        $.ajax({
-            type: "GET",
-            url: "/messages",
-            success: successHandler,
-            dataType: "json",
-            contentType: "application/json"
-        });
-    }
-
-    setInterval(pollForMessages, 100);
+    setInterval(Client.pollForMessages(successHandler), 100);
 });
