@@ -10,6 +10,12 @@ requirejs(['jquery'], function( $ ) {
 	var $submit = $('#submit');
     $submit.on('click', postMessage);
 
+    $('#message').on('keypress', function(e) {
+        if(e.which === 13){
+            postMessage(this);
+        }
+    });
+
     function updateChatLog(messageText) {
         var $chatLog = $('#chatLog');
         $chatLog.append('<p>'+messageText+'</p>');
@@ -27,8 +33,8 @@ requirejs(['jquery'], function( $ ) {
         receivedMessages = allMessages;
     }
 
-    function postMessage(messageText) {
-        var messageText = $('#message').val();
+    function postMessage(dInput) {
+        var messageText = $(dInput).val();
         messageJson = JSON.stringify({
             'text': messageText
         });
@@ -40,6 +46,7 @@ requirejs(['jquery'], function( $ ) {
             dataType: "json",
             contentType: "application/json"
         });
+        $(dInput).val('');
     }
 
     function pollForMessages() {
