@@ -27,7 +27,7 @@ requirejs(['jquery'], function( $ ) {
         receivedMessages = allMessages;
     }
 
-    function postMessage(){
+    function postMessage(messageText) {
         var messageText = $('#message').val();
         messageJson = JSON.stringify({
             'text': messageText
@@ -41,4 +41,16 @@ requirejs(['jquery'], function( $ ) {
             contentType: "application/json"
         });
     }
+
+    function pollForMessages() {
+        $.ajax({
+            type: "GET",
+            url: "/messages",
+            success: successHandler,
+            dataType: "json",
+            contentType: "application/json"
+        });
+    }
+
+    setInterval(pollForMessages, 100);
 });
