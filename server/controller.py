@@ -1,12 +1,19 @@
-from flask import Flask, send_from_directory
+from flask import Flask, send_from_directory, request
 from random import random
 import math
 app = Flask(__name__)
 
+MESSAGE_CACHE = []
 
-@app.route("/random")
-def random_number():
-	return "Enjoy this random number on a scale from one to seventeen: " + str(int(math.ceil(random() * 17)))
+@app.route("/message", method=["POST"])
+def submit_message():
+	MESSAGE_CACHE.append(request.form)
+	return MESSAGE_CACHE
+
+@app.route("/messages", method=["GET"])
+def get_messages():
+	return MESSAGE_CACHE
+
 
 @app.route("/static/<path:path>")
 def serve_static_content():
